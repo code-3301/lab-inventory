@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>DIU Lab Inventory - Manage Students</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0d1b2a, #1b263b);
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: #e0e1dd;
+    }
+    .navbar {
+      background: #0b1320 !important;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .navbar-brand img {
+      transition: transform 0.3s ease;
+    }
+    .navbar-brand img:hover {
+      transform: rotate(10deg);
+    }
+    .nav-link {
+      color: #778da9 !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #00f5d4 !important;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .btn-primary {
+      background: #00f5d4;
+      border: none;
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      color: #0d1b2a;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #00d1b2;
+      transform: scale(1.05);
+    }
+    .btn-danger {
+      background: #ff4d6d;
+      border: none;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      transition: background 0.3s ease;
+    }
+    .btn-danger:hover {
+      background: #e63950;
+    }
+    .btn-warning {
+      background: #ffb703;
+      border: none;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      color: #0d1b2a;
+      transition: background 0.3s ease;
+    }
+    .btn-warning:hover {
+      background: #fb8500;
+    }
+    .table {
+      background: #1b263b;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 245, 212, 0.1);
+    }
+    .table thead {
+      background: #415a77;
+    }
+    .table th, .table td {
+      color: #e0e1dd;
+      border: none;
+      padding: 1rem;
+    }
+    .table tbody tr {
+      transition: background 0.3s ease;
+    }
+    .table tbody tr:hover {
+      background: #2a3552;
+    }
+    .modal-content {
+      background: #1b263b;
+      border: 1px solid #415a77;
+      border-radius: 15px;
+      color: #e0e1dd;
+    }
+    .modal-header {
+      border-bottom: 1px solid #415a77;
+    }
+    .modal-footer {
+      border-top: 1px solid #415a77;
+    }
+    .modal-title {
+      color: #00f5d4;
+    }
+    .form-control {
+      background: #415a77;
+      border: none;
+      border-radius: 10px;
+      color: #e0e1dd;
+      padding: 0.75rem;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-control:focus {
+      background: #526d94;
+      box-shadow: 0 0 10px rgba(0, 245, 212, 0.3);
+      color: #e0e1dd;
+      outline: none;
+    }
+    .form-control::placeholder {
+      color: #a9b7d0;
+    }
+    .btn-secondary {
+      background: #526d94;
+      border: none;
+      border-radius: 50px;
+      transition: background 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background: #415a77;
+    }
+    .close {
+      color: #e0e1dd;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+    .close:hover {
+      opacity: 1;
+    }
+    .success-message {
+      color: #00f5d4;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .error-message {
+      color: #ff4d6d;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      .table th, .table td {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="/images/logo.png" width="auto" height="50" alt="DIU Lab Inventory Logo" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/inventory/admin/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/inventory/admin/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h2 class="mb-4" style="color: #00f5d4;">Manage Students</h2>
+  <a th:href="@{students/add}" class="btn btn-primary mb-4">
+    Add Student
+  </a>
+  <div th:if="${successMessage}" class="success-message">
+    <p th:text="${successMessage}"></p>
+  </div>
+  <div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <!-- Students Table -->
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Student ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+      <td th:text="${student.id}"></td>
+      <td th:text="${student.studentId}"></td>
+      <td th:text="${student.name}"></td>
+      <td th:text="${student.email}"></td>
+      <td>
+        <form th:action="@{/inventory/admin/students/delete/{id}(id=${student.id})}" method="get" style="display: inline;">
+          <input type="submit" value="Delete" class="btn btn-danger btn-sm">
+        </form>
+        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" th:attr="data-bs-target='#updateStudentModal' + ${student.id}"
+                th:attrappend="data-student-id=${student.id}, data-student-id-number=${student.studentId}, data-name=${student.name}, data-email=${student.email}">
+          Update
+        </button>
+        <!-- Update Student Modal -->
+        <div class="modal fade" th:id="'updateStudentModal' + ${student.id}" tabindex="-1" th:attr="aria-labelledby='updateStudentModalLabel' + ${student.id}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <form th:action="@{/inventory/admin/students/update}" method="post">
+                <div class="modal-header">
+                  <h5 class="modal-title" th:id="'updateStudentModalLabel' + ${student.id}">Update Student</h5>
+                  <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <input type="hidden" name="studentId" th:value="${student.id}">
+                  <div class="form-group mb-3">
+                    <label for="'updateStudentId' + ${student.id}">Student ID</label>
+                    <input type="text" th:id="'updateStudentId' + ${student.id}" name="studentIdNumber" class="form-control" required th:value="${student.studentId}">
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="'updateName' + ${student.id}">Name</label>
+                    <input type="text" th:id="'updateName' + ${student.id}" name="name" class="form-control" required th:value="${student.name}">
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="'updateEmail' + ${student.id}">Email</label>
+                    <input type="email" th:id="'updateEmail' + ${student.id}" name="email" class="form-control" required th:value="${student.email}">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Update Student</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+XqE7gLqQ8kJ7y6u0z2j" crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function() {
+    $('.btn-warning').on('click', function() {
+      const modalId = $(this).data('bs-target').substring(1);
+      const modal = $('#' + modalId);
+      const studentId = $(this).data('student-id');
+      const studentIdNumber = $(this).data('student-id-number');
+      const name = $(this).data('name');
+      const email = $(this).data('email');
+      modal.find('input[name="studentId"]').val(studentId);
+      modal.find('input[name="studentIdNumber"]').val(studentIdNumber);
+      modal.find('input[name="name"]').val(name);
+      modal.find('input[name="email"]').val(email);
+    });
+  });
+</script>
+</body>
+</html>
