@@ -99,7 +99,7 @@ Run the application
 ## Access the system
 Open your browser and go to:
 ```url
-http://localhost:8080/lab-inventoty/admin/login
+http://localhost:8080/inventoty/admin/login
 ```
 
 # Default Admin Credentials
